@@ -36,7 +36,7 @@
 							<archive>
 								<manifest>
 									<mainClass>
-										br.com.qm.conn.ExemploConexao
+										br.com.qm.carro.ProgramaPrincipal
 									</mainClass>
 								</manifest>
 							</archive>
