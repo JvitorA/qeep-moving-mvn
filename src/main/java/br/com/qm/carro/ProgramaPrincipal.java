@@ -3,7 +3,7 @@ package br.com.qm.carro;
 import java.util.List;
 import java.util.Scanner;
 
-import br.com.qm.carro.dao.CarroDAO;
+import br.com.qm.carro.dao.CarroHibernateDAO;
 import br.com.qm.carro.pojo.Carro;
 
 public class ProgramaPrincipal {
@@ -11,8 +11,11 @@ public class ProgramaPrincipal {
 	
 	public static void main(String[] args) {
 		
+		
 		Scanner teclado = new Scanner(System.in);
-		CarroDAO carroDao = new CarroDAO();
+//		CarroDAO carroDao = new CarroDAO();
+		CarroHibernateDAO carroHibernateDao = new CarroHibernateDAO();
+		
 		
 		int opcao = 0;
 		
@@ -22,6 +25,7 @@ public class ProgramaPrincipal {
 			System.out.println("2 - listar");
 			System.out.println("3 - consultar");
 			System.out.println("4 - remover");
+			System.out.println("5 - listar por marca");
 			System.out.println("0 - sair");
 			opcao = teclado.nextInt();
 			
@@ -39,13 +43,13 @@ public class ProgramaPrincipal {
 					String modelo = teclado.next();
 					
 					
-					 if (carroDao.insereCarro(new Carro(placa, cor, marca, modelo))) {
+					 if (carroHibernateDao.insereCarro(new Carro(placa, cor, marca, modelo, 100F))) {
 						 System.out.println("Carro inserido com sucesso!");
 					 }
 					 break;
 				case 2:
 					System.out.println("- Listagem -");
-					List<Carro> carros = carroDao.listarCarros();
+					List<Carro> carros = carroHibernateDao.listarCarros();
 					for (Carro carro : carros) {
 						System.out.println(carro);
 					}
@@ -55,7 +59,7 @@ public class ProgramaPrincipal {
 					System.out.println("Digite a placa a ser consultada: ");
 					String placaConsulta = teclado.next();
 					
-					Carro carroConsultado = carroDao.consultaCarro(placaConsulta);
+					Carro carroConsultado = carroHibernateDao.consultaCarro(placaConsulta);
 					
 					if (carroConsultado != null) {
 						System.out.println(carroConsultado);
@@ -68,8 +72,19 @@ public class ProgramaPrincipal {
 					
 					
 					
-					if (carroDao.removeCarro(placaRemovida)) {
+					if (carroHibernateDao.removeCarro(placaRemovida)) {
 						System.out.println("Carro removido!");
+					}
+					break;
+					
+				case 5:
+					System.out.println("- Listagem por Marca -");
+					System.out.println("Digite a marca pela qual quer listar:");
+					String marcaListagem = teclado.next();
+					
+					List<Carro> carrosPorMarca = carroHibernateDao.listarCarrosPorFabricante(marcaListagem);
+					for (Carro carro : carrosPorMarca) {
+						System.out.println(carro);
 					}
 					break;
 				case 0:
